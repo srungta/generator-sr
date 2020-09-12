@@ -5,10 +5,31 @@ const fs = require('fs');
 const chalk = require('chalk');
 const yosay = require('yosay');
 
-function callbackFunction(err) {
+function ErrorCallBack(err) {
     if (err) {
         console.log(err);
     }
+}
+
+function GetMainFileContent(componentName, styled) {
+    let content = "import React from 'react';\n";
+    if (styled) {
+        content += `import { ${componentName}Container } from './${componentName}.styles';\n`;
+    }
+    return content;
+}
+function GetStyledFileContent(componentName) {
+    let content = "import styled from 'styled-components';\n";
+    content += `\n`;
+    content += `const ${componentName}Container = styled.div\`\n`;
+    content += `\`;\n`;
+    content += `\n`;
+    content += `export { ${componentName}Container };\n`;
+    return content;
+}
+function GetIndexFileContent(componentName) {
+    let content = `export { ${componentName} } from './${componentName}';\n`;
+    return content;
 }
 module.exports = class extends Generator {
     constructor(args, opts) {
@@ -28,14 +49,24 @@ module.exports = class extends Generator {
     }
 
     writing() {
-        fs.writeFile(this.options['component-name'] + ".tsx", "", callbackFunction)
-        fs.writeFile("index.ts", "", callbackFunction)
+        const componentName = this.options['component-name'];
+        fs.writeFile(
+            componentName + ".tsx",
+            GetMainFileContent(componentName, this.options.styled),
+            ErrorCallBack)
+        fs.writeFile(
+            "index.ts",
+            GetIndexFileContent(componentName),
+            ErrorCallBack)
         if (this.options.styled) {
-            fs.writeFile(this.options['component-name'] + ".styles.tsx", "", callbackFunction)
+            fs.writeFile(
+                componentName + ".styles.tsx",
+                GetStyledFileContent(componentName),
+                ErrorCallBack)
         }
     }
 
     install() {
-        this.log('\nDone');
+        this.log('Done');
     }
 };
