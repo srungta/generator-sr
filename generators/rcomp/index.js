@@ -1,60 +1,7 @@
 'use strict';
 
 const Generator = require('yeoman-generator');
-const fs = require('fs');
 
-function ErrorCallBack(err) {
-    if (err) {
-        console.log(err);
-    }
-}
-
-function GetMainFileContent(componentName, isStyled, hasProps) {
-    // Add headers
-    let content = "import React from 'react';\n";
-    if (isStyled) {
-        content += `import { ${componentName}Container } from './${componentName}.styles';\n`;
-    }
-    content += `\n`;
-
-    // Add props
-    if (hasProps) {
-        content += "interface Props {\n";
-        content += "\tpropName:string;\n";
-        content += "}\n";
-    }
-    content += `\n`;
-
-    // Add component
-    content += `const ${componentName}: React.FC${hasProps ? '<Props>' : ''}  = ( ${hasProps ? '{ propName }' : ''} ) => {\n`;
-    content += `\treturn (\n`;
-    content += `\t\t${isStyled ? `<${componentName}Container>` : '<div>'}\n`;
-    content += `\t\t\tHi\n`;
-    content += `\t\t${isStyled ? `</${componentName}Container>` : '</div>'}\n`;
-    content += `\t)\n`;
-    content += `};\n`;
-
-    content += `\n`;
-
-    // Export component
-    content += `export { ${componentName} };`
-    content += `\n`;
-
-    return content;
-}
-function GetStyledFileContent(componentName) {
-    let content = "import styled from 'styled-components';\n";
-    content += `\n`;
-    content += `const ${componentName}Container = styled.div\`\n`;
-    content += `\`;\n`;
-    content += `\n`;
-    content += `export { ${componentName}Container };\n`;
-    return content;
-}
-function GetIndexFileContent(componentName) {
-    let content = `export { ${componentName} } from './${componentName}';\n`;
-    return content;
-}
 module.exports = class extends Generator {
     constructor(args, opts) {
         // Calling the super constructor is important so our generator is correctly set up
@@ -79,35 +26,31 @@ module.exports = class extends Generator {
         });
     }
 
-    writing() {
+    async writing() {
         const componentName = this.options['component-name'];
         const isStyled = this.options['is-styled'];
         const hasProps = this.options['has-props'];
         const shouldCreateFolder = this.options['create-folder'];
 
-        // create folder if required.
-        if (shouldCreateFolder) {
+        this.fs.copyTpl(
+            this.templatePath('index.ejs'),
+            this.destinationPath(shouldCreateFolder ? `${componentName}/index.ts` : "index.ts"),
+            { componentName: componentName }
+        );
 
-        }
-
-        // Create main file.
-        fs.writeFile(
-            componentName + ".tsx",
-            GetMainFileContent(componentName, isStyled, hasProps),
-            ErrorCallBack)
-
-        // Create index file.
-        fs.writeFile(
-            "index.ts",
-            GetIndexFileContent(componentName),
-            ErrorCallBack)
+        this.fs.copyTpl(
+            this.templatePath('component.ejs'),
+            this.destinationPath(shouldCreateFolder ? `${componentName}/${componentName}.tsx` : `${componentName}.tsx`),
+            { componentName: componentName, isStyled: isStyled, hasProps: hasProps }
+        );
 
         // Create styled file.
         if (isStyled) {
-            fs.writeFile(
-                componentName + ".styles.tsx",
-                GetStyledFileContent(componentName),
-                ErrorCallBack)
+            this.fs.copyTpl(
+                this.templatePath('styled-component.ejs'),
+                this.destinationPath(shouldCreateFolder ? `${componentName}/${componentName}.styles.tsx` : `${componentName}.styles.tsx`),
+                { componentName: componentName }
+            );
         }
     }
 
@@ -115,3 +58,4 @@ module.exports = class extends Generator {
         this.log('Done');
     }
 };
+
