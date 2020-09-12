@@ -1,11 +1,11 @@
 {
   "name": "generator-sr",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A personal generator for creating files for different languages and libraries.",
   "main": "index.js",
   "scripts": {
     "build": "npm link",
-    "test-rfc": "npm link && yo sr:rfc test -s -p -f"
+    "test-rfc": "npm link && cd test && yo sr:rfc test -s -p -f -i"
   },
   "files": [
     "generators"
@@ -13,10 +13,18 @@
   "keywords": [
     "yeoman-generator"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "srungta",
+  "license": "MIT",
   "dependencies": {
     "yeoman-generator": "^4.2.0"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srungta/generator-sr.git"
+  },
+  "bugs": {
+    "url": "https://github.com/srungta/generator-sr/issues"
+  },
+  "homepage": "https://github.com/srungta/generator-sr#readme"
 }

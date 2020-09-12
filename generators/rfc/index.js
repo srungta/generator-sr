@@ -24,6 +24,11 @@ module.exports = class extends Generator {
             alias: "f",
             type: Boolean
         });
+        this.option('add-to-root-index', {
+            description: "Adds the export to the root index if a new folder is created. Creates the root index if not present.",
+            alias: "i",
+            type: Boolean
+        });
     }
 
     async writing() {
@@ -31,6 +36,7 @@ module.exports = class extends Generator {
         const isStyled = this.options['is-styled'];
         const hasProps = this.options['has-props'];
         const shouldCreateFolder = this.options['create-folder'];
+        const shouldAddToRootIndex = this.options['add-to-root-index'] && shouldCreateFolder;
 
         this.fs.copyTpl(
             this.templatePath('index.ejs'),
@@ -52,11 +58,32 @@ module.exports = class extends Generator {
                 { componentName: componentName }
             );
         }
+
+        if (shouldAddToRootIndex) {
+            const pathToRootIndex = `index.ts`;
+            const buffer = new Buffer.from(`\nexport { ${componentName} } from './${componentName}';`);
+            fs.open(pathToRootIndex, 'a', function (err, fd) {
+                // If the output file does not exists 
+                // an error is thrown else data in the 
+                // buffer is written to the output file 
+                if (err) {
+                    console.log('Cant open root index.ts');
+                } else {
+                    fs.write(fd, buffer, 0, buffer.length, null, function (err, writtenbytes) {
+                        if (err) {
+                            console.log('Cant write to root index.ts file');
+                        } else {
+                            console.log('Updated root index.ts file');
+                        }
+                    })
+                }
+            });
+        }
     }
 
     install() {
         const componentName = this.options['component-name'];
-        
+
         if (fs.existsSync(`${componentName}/.yo-repository`)) {
             fs.rmdir(`${componentName}/.yo-repository`, {}, function (error) {
                 if (error) { console.log(error); }
