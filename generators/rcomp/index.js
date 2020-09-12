@@ -1,7 +1,7 @@
 'use strict';
 
 const Generator = require('yeoman-generator');
-
+const fs = require('fs');
 module.exports = class extends Generator {
     constructor(args, opts) {
         // Calling the super constructor is important so our generator is correctly set up
@@ -55,6 +55,18 @@ module.exports = class extends Generator {
     }
 
     install() {
+        const componentName = this.options['component-name'];
+        
+        if (fs.existsSync(`${componentName}/.yo-repository`)) {
+            fs.rmdir(`${componentName}/.yo-repository`, {}, function (error) {
+                if (error) { console.log(error); }
+            });
+        }
+        if (fs.existsSync(`.yo-repository`)) {
+            fs.rmdir(`.yo-repository`, {}, function (error) {
+                if (error) { console.log(error); }
+            });
+        }
         this.log('Done');
     }
 };
