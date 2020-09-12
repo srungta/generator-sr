@@ -1,10 +1,11 @@
 import React from 'react';
 <% if (isStyled) { %>import { <%= componentName %>Container } from './<%= componentName %>.styles';<% } %>
 
-<% if (hasProps) { %>interface Props {
+<% if (hasProps) { -%>
+interface Props {
   propName:string;
-}<% } %>
-
+}
+<% } -%>
 const <%= componentName %>: React.FC<% if (hasProps) { %><Props><%} %> = (<% if (hasProps) { %>propName<%} %>) =>
   {
   return (
