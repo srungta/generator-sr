@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm run copy && npm link",
-    "copy": "copyfiles -a \"../packages/template/**/*\" \"./generators/app/templates/template\" -e \"../packages/template/node_modules/**/*\""
+    "build": "npm link"
   },
   "files": [
     "generators"

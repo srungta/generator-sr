@@ -1,23 +1,49 @@
-var Generator = require('yeoman-generator');
+'use strict';
 
+const Generator = require('yeoman-generator');
+const fs = require('fs');
+const chalk = require('chalk');
+const yosay = require('yosay');
+
+function callbackFunction(err) {
+    if (err) {
+        console.log(err);
+    }
+}
 module.exports = class extends Generator {
-  // The name `constructor` is important here
-  constructor(args, opts) {
-    // Calling the super constructor is important so our generator is correctly set up
-    super(args, opts);
+    constructor(args, opts) {
+        // Calling the super constructor is important so our generator is correctly set up
+        super(args, opts);
+        this.option('comp');
+        console.log(args);
+        console.log(opts);
+    }
+    async prompting() {
+        this.answers = await this.prompt([
+            {
+                type: 'input',
+                name: 'componentname',
+                message: 'Component name',
+                required: true
+            },
+            {
+                type: 'input',
+                name: 'generateStyledComponentFile',
+                message: 'Generate styled component file?',
+                default: true
+            }
+        ]);
+    }
 
-    // Next, add your custom code
-    this.option('comp'); // This method adds support for a creating a new component flag
-  }
-  method1() {
-    this.log('method 1 just ran');
-  }
+    writing() {
+        fs.writeFile(this.answers.componentname + ".tsx", "", callbackFunction)
+        fs.writeFile("index.ts", "", callbackFunction)
+        if (this.answers.generateStyledComponentFile) {
+            fs.writeFile(this.answers.componentname + ".styles.tsx", "", callbackFunction)
+        }
+    }
 
-  asyncTask() {
-    var done = this.async();
-
-    getUserEmail(function (err, name) {
-      done(err);
-    });
-  }
+    install() {
+        this.log('\nDone');
+    }
 };
