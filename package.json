@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm link"
+    "build": "npm link",
+    "test-rcomp": "npm link && yo sr:rcomp test -s -p -f"
   },
   "files": [
     "generators"
@@ -15,12 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "chalk": "^2.4.2",
-    "yeoman-generator": "^4.2.0",
-    "yosay": "^2.0.2"
+    "yeoman-generator": "^4.2.0"
   },
-  "devDependencies": {
-    "copyfiles": "^2.1.1",
-    "husky": "^3.0.9"
-  }
+  "devDependencies": {}
 }
