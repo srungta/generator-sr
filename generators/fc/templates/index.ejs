@@ -1,0 +1,18 @@
+import { <%= componentClassName %> } from "./<%= componentClassName %>";
+import { customElement } from "@microsoft/fast-element";
+import { <%= componentClassName %>Styles as styles } from "./<%= componentClassName %>.styles";
+import { <%= componentClassName %>Template as template } from "./<%= componentClassName %>.template";
+
+/**
+ * @public
+ * HTML Element
+ */
+@customElement({
+    name: "<%= componentElementName %>",
+    template,
+    styles,
+    shadowOptions: {
+        delegatesFocus: true
+    }
+})
+export class <%= componentClassName %>Element extends <%= componentClassName %> { }

@@ -1,0 +1,20 @@
+import { FASTElement, observable, volatile } from "@microsoft/fast-element";
+
+/** <%= componentClassName %> webcomponent class definition */
+export class <%= componentClassName %> extends FASTElement {
+    // PARAMETERS THAT PARENT COMPONENTS SHOULD PASS.
+    @observable data?: <%= componentClassName %>DataModel;
+    
+    async connectedCallback(): Promise<void> {
+        super.connectedCallback();
+    }
+
+    dataChanged(_: <%= componentClassName %>DataModel, newValue: <%= componentClassName %>DataModel) {
+        
+    }
+
+    disconnectedCallback(): void {
+        super.disconnectedCallback(),
+       
+    }
+}

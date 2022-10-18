@@ -1,11 +1,12 @@
 {
   "name": "generator-sr",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A personal generator for creating files for different languages and libraries.",
   "main": "index.js",
   "scripts": {
     "build": "npm link",
-    "test-rfc": "npm link && cd test && yo sr:rfc test -s -p -f -i"
+    "test-rfc": "npm link && cd test && yo sr:rfc test -s -p -f -i",
+    "test-fc": "npm link && cd test && yo sr:fc test-element -m -t"
   },
   "files": [
     "generators"

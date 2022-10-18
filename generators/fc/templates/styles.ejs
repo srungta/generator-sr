@@ -1,0 +1,14 @@
+import { ElementStyles, css } from "@microsoft/fast-element";
+import { darkModeStylesheetBehavior } from "@microsoft/fast-foundation";
+
+/** Style definitions for <%= componentClassName %> */
+export const <%= componentClassName %>Styles = css`
+:host {
+
+}
+`.withBehaviors(
+  darkModeStylesheetBehavior(
+      css`
+      
+  `)
+);

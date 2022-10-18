@@ -6,7 +6,7 @@ interface Props {
   propName:string;
 }
 <% } -%>
-const <%= componentName %>: React.FC<% if (hasProps) { %><Props><%} %> = (<% if (hasProps) { %>propName<%} %>) =>
+const <%= componentName %>: React.FC<% if (hasProps) { %><Props><%} %> = (<% if (hasProps) { %>{propName}<%} %>) =>
   {
   return (
     <% if (isStyled) { %><<%= componentName %>Container><%} else { %><div><% } %>
